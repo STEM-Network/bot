@@ -1,0 +1,22 @@
+{
+  "name": "bot",
+  "version": "1.0.0",
+  "description": "The NCEES discord bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NCEES-discord/bot.git"
+  },
+  "author": "NCEES discord R&D",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/NCEES-discord/bot/issues"
+  },
+  "homepage": "https://github.com/NCEES-discord/bot#readme",
+  "dependencies": {
+    "discord.js": "^12.2.0"
+  }
+}
