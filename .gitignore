@@ -1,3 +1,6 @@
+# Discord API key
+auth.json
+
 # Logs
 logs
 *.log
