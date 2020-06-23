@@ -32,3 +32,5 @@ fs.readdir('./modules',(err,modules)=>{
         cli.login(auth.token)
     }
 })
+
+//testing the github-discord hook
