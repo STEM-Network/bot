@@ -1,7 +1,7 @@
 var log = ()=>{};
 module.exports = (_log,cli)=>{
     log =_log;
-    send('/score', cli);
+    send('/score', cli); //Replace this with module added test cases
 }
 
 //TODO implement more of the discord API

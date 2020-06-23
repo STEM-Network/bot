@@ -5,6 +5,7 @@ module.exports=(cli, db, log, options={regex:/^\/([a-zA-Z0-9_.]*)( |$)/})=>{
     }
     cli.on('message', msg=>{
         var cmd=options.regex.exec(msg.content);
+        //TODO extract cmd args
         if(cmd != null && cmd[1]){
             var tlc = cmd[1].toLocaleLowerCase()
             if(registeredCMDS.list.includes(tlc)){
