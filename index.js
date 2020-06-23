@@ -23,7 +23,12 @@ fs.readdir('./modules',(err,modules)=>{
         log('CORE', 3,"  ",{type:"moduleDesc",object:mod.descriptor});
     });
     
-    //Do debug instead of login
-    require('./debugger')(log.bind(null,'DEBUGGER'),cli);
-    //cli.login(auth.token)
+    if(auth.token==""){
+        log('CORE', 2,"No Auth token, running in debug mode!");
+        //log('CORE', 3,"Severity formats:");
+        //for(var i=0; i<5; i++)log('CORE', i,`Severity ${i}`);
+        require('./debugger')(log.bind(null,'DEBUGGER'),cli);
+    } else {
+        cli.login(auth.token)
+    }
 })
