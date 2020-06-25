@@ -38,6 +38,9 @@ const levels = [
 module.exports=(module, severity, message="", object={type:false})=>{
     if(object.type){
         switch(object.type){
+            case 'moduleDescFail':
+                message+=`Failed to load "${cols.FgGreen+object.object.name+cols.FgWhite}" module V${cols.FgGreen+object.object.version}:: ${object.reason}`
+                break;
             case 'moduleDesc':
                 message+=`Loaded "${cols.FgGreen+object.object.name+cols.FgWhite}" module V${cols.FgGreen+object.object.version}`
                 break;
