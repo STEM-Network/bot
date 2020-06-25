@@ -5,7 +5,7 @@
 */
 
 const fs = require('fs');
-const l = require('../logger');
+const log = require('../logger');
 
 var loadedCollectionNames=[];
 var loadedCollections={};
