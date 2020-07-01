@@ -5,7 +5,7 @@ const djs = require('discord.js');
 const auth = require('./auth.json');
 const db = require('./data/db');
 const log = require('./logger');
-const { SSL_OP_EPHEMERAL_RSA } = require('constants');
+
 log('CORE', 3,"",{type:"startup"});
 
 var cli = new djs.Client();
