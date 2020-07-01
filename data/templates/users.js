@@ -13,6 +13,11 @@ class UserTemplate extends DataTemplate{
         log(3, `User create: ${vals.join('/')}`)
         return obj;
     }
+
+    registerKey(desc={}){
+        log(4,`Registed User key: ${JSON.stringify(desc)}`);
+        super.registerKey(desc);
+    }
 }
 
 module.exports = UserTemplate;
