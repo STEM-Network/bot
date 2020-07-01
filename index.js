@@ -9,22 +9,20 @@ log('CORE', 3,"",{type:"startup"});
 
 var cli = new djs.Client();
 
-const mgr = require('./mgr')(cli,db,log.bind(null,"MGR"),{regex:/^\/([a-zA-Z0-9_.]*)( |$)/});
+const mgr = require('./mgr')(cli,db,log.bind(null,"MGR"),{regex:/^\/([a-zA-Z0-9_\-.]*)( |$)/});
 
 var loadedModules = [];
 
 //Update from git
 mgr.registerCMD('git-update', (err, msg, args)=>{
-    if(err){
-        log('CORE', 0, `Failed to execute git update :: ${err}`);
-        return;
-    }
+    log('CORE',3,'Got git Update CMD');
     if(msg.author.id != "434711871061491716") {
         msg.reply("You need to be Azurethi to do this.");
         return;
     }
+    msg.reply("Shutting down for git update");
     var shell=require('shelljs');
-    shell.exec('bash update.js')
+    shell.exec('bash update.sh')
     process.exit(0);
 },{getUserdata:false, createNew:false});
 
