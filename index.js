@@ -21,7 +21,7 @@ mgr.registerCMD('git-update', (err, msg, args)=>{
         msg.reply("You need to be Azurethi to do this.");
         return;
     }
-    if(args[1].toLowerCase() == "log"){
+    if(args[1] && args[1].toLowerCase() == "log"){
         fs.readFile('update.log',(err,data)=>{
             if(err){
                 msg.reply("no log available.");
