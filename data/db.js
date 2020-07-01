@@ -16,23 +16,28 @@ exports.get=(id, next=()=>{})=>{
         next(false, loadedCollections[id]);
     } else {
         fs.exists(`./data/collections/${id}`, (exists)=>{
-            if(exists){
-                fs.readdir(`./data/collections/${id}`,(err,files)=>{
-                    if(err){
-                        next(err);
-                    } else {
-                        fs.exists(`./data/templates/${id}.js`, (hasTemplate)=>{
-                            var loadedCol = new Collection(id, files, hasTemplate?require(`./templates/${id}.js`):false);
-                            loadedCollectionNames.push(id);
-                            loadedCollections[id] = loadedCol;
-                            next(false,loadedCol);
-                        });
-                    }
-                    
-                })
-            } else {
-                next(new Error("Collection does not exist"));
+            if(!exists){
+                log(3,`Creating new collection "${id}"`);
+                var created = fs.mkdirSync(`./data/collections/${id}`,{recursive:true});
+                if(!created){
+                    log(2, "Failed to create new collection");
+                    next("Failed to create new collection");
+                    return;
+                }
             }
+            fs.readdir(`./data/collections/${id}`,(err,files)=>{
+                if(err){
+                    next(err);
+                } else {
+                    fs.exists(`./data/templates/${id}.js`, (hasTemplate)=>{
+                        var loadedCol = new Collection(id, files, hasTemplate?require(`./templates/${id}.js`):false);
+                        loadedCollectionNames.push(id);
+                        loadedCollections[id] = loadedCol;
+                        next(false,loadedCol);
+                    });
+                }
+                
+            })
         });
     }
 }
