@@ -18,12 +18,7 @@ exports.get=(id, next=()=>{})=>{
         fs.exists(`./data/collections/${id}`, (exists)=>{
             if(!exists){
                 log(3,`Creating new collection "${id}"`);
-                var created = fs.mkdirSync(`./data/collections/${id}`,{recursive:true});
-                if(!created){
-                    log(2, "Failed to create new collection: " + JSON.stringify(created));
-                    next("Failed to create new collection");
-                    return;
-                }
+                fs.mkdirSync(`./data/collections/${id}`,{recursive:true});
             }
             fs.readdir(`./data/collections/${id}`,(err,files)=>{
                 if(err){
@@ -36,7 +31,6 @@ exports.get=(id, next=()=>{})=>{
                         next(false,loadedCol);
                     });
                 }
-                
             })
         });
     }
