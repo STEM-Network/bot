@@ -4,7 +4,7 @@ exports.init=(log, mgr, db, cli)=>{
     cli.on('guildMemberAdd',(member)=>{
         switch(member.guild.id){
             case "714803464764522546": //R&D
-                var embed = new MessageEmbed(buildEmbed(member));
+                var embed = buildEmbed(member);
                 member.guild.channels.resolve("727869652776124416").send(embed);
                 break;
             case "398644997412356106": //NCEES
@@ -61,39 +61,16 @@ function buildEmbed(member){
     var thumbnailUrl = member.guild.iconURL();
     var imageUrl = member.user.avatarURL();
 
-    var template= {
-        "content": "",
-        "embed": {
-          "title": `Welcome to the NCEES Networking Community, ${member.user.username}!`,
-          "description": `**You're our ${memberNum}${suffix} member!** Bringing us 0.1% closer to our next goal of **${nextGoal}** members, thanks for the help!`,
-          "url": "",
-          "color": 13912604,
-          "timestamp": "2020-07-01T12:57:10.477Z",
-          "footer": {
-            "icon_url": footerUrl,
-            "text": "NCEES"
-          },
-          "thumbnail": {
-            "url": thumbnailUrl
-          },
-          "image": {
-            "url": imageUrl
-          },
-          "author": {
-            "name": "NCEES",
-            "url": "",
-            "icon_url": footerUrl
-          },
-          "fields": [
-            {
-              "name": "Things to see",
-              "value": "Please have a read of [rules]() & visit [roles]() to get started with the community"
-            },
-            {
-              "name": "Progress to next goal",
-              "value": `**${nextGoal-1000}**- ${percentBar} [${percent}%] -**${nextGoal}**`
-            }
-          ]
-        }
-      }
+
+    var embed = new MessageEmbed()
+        .setTitle(`Welcome to the NCEES Networking Community, ${member.user.username}!`)
+        .setColor(0xD44A1C)
+        .setAuthor("NCEES",footerUrl)
+        .setDescription(`**You're our ${memberNum}${suffix} member!** Bringing us 0.1% closer to our next goal of **${nextGoal}** members, thanks for the help!`)
+        .setFooter("NCEES",footerUrl)
+        .setImage(imageUrl)
+        .setThumbnail(thumbnailUrl)
+        .addField("Things to See","Please have a read of [rules]() & visit [roles]() to get started with the community")
+        .addField("Progress to next goal",`**${nextGoal-1000}**- ${percentBar} [${percent}%] -**${nextGoal}**`)
+    return embed;
 }
