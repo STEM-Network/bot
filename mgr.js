@@ -16,6 +16,16 @@ module.exports=(cli, db, log, options={regex:/^\/([a-zA-Z0-9_.]*)( |$)/})=>{
         }
     })
     const api = {
+        registerKey:(collection, keyData, next)=>{
+            db.get(collection,(err,col)=>{
+                if(err){
+                    next(err);
+                } else {
+                    col.template.registerKey(keyData);
+                    next(false);
+                }
+            });
+        },
         registerCMD:(cmd, handler, options={getUserdata:false,createNew:false})=>{
             if(options.getUserdata){
                 registeredCMDS.handlers[cmd.toLowerCase()]=(err, msg, args)=>{
@@ -24,10 +34,10 @@ module.exports=(cli, db, log, options={regex:/^\/([a-zA-Z0-9_.]*)( |$)/})=>{
                         if(err){
                             handler(err,msg,args)
                         } else {
-                            users.get(msg.user.id, (err,userdata)=>{
+                            users.get(msg.author.id, (err,userdata)=>{
                                 if(err){
                                     if(options.createNew && err == "Does not exist in users!"){
-                                        handler(false,msg,args,users.create(msg.user.id, msg.user.tag),users);
+                                        handler(false,msg,args,users.create(msg.author.id, msg.author.tag),users);
                                     } else {
                                         handler(err,msg,args,null,null)
                                     }
@@ -43,16 +53,20 @@ module.exports=(cli, db, log, options={regex:/^\/([a-zA-Z0-9_.]*)( |$)/})=>{
             }
             registeredCMDS.list.push(cmd.toLowerCase());
         },
-        getUserdata:(id, next)=>{
+        getUserdata:(usr, next, options={createNew:false})=>{
             db.get('users',(err,users)=>{
                 if(err){
                     next(err)
                 } else {
-                    users.get(id, (err,userdata)=>{
+                    users.get(usr.id, (err,userdata)=>{
                         if(err){
-                            next(err)
+                            if(options.createNew && err == "Does not exist in users!"){
+                                next(false,users.create(usr.id,usr.tag),users);
+                            } else {
+                                next(err)
+                            }
                         } else {
-                            next(false, userdata);
+                            next(false,userdata,users)
                         }
                     })
                 }
