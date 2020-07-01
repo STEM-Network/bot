@@ -64,7 +64,7 @@ exports.cmds={
                     var desired=args.join(' ').replace(/[<>@]/g,'');
                     var roleId=-1;
                     for(var i=0; i<settings.allowedRoles.length; i++){
-                        if(settings.allowedRoles.name.toLowerCase().startsWith(desired)){
+                        if(settings.allowedRoles[i].name.toLowerCase().startsWith(desired)){
                             roleId=i;
                             break;                            
                         }
