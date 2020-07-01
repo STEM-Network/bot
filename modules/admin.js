@@ -53,7 +53,7 @@ function dbcmd(err,msg,args){
             }
         })
     } else {
-        msg.channel.send('Usage: /db <collection> [<itemid>]');
+        msg.channel.send('Usage: \`\`/db <collection> [<itemid>]\`\`');
     }
 }
 
