@@ -5,7 +5,9 @@ exports.init=(log, mgr, db, cli)=>{
         switch(member.guild.id){
             case "714803464764522546": //R&D
                 var embed = buildEmbed(member);
-                member.guild.channels.resolve("727869652776124416").send(embed);
+                var chan = member.guild.channels.resolve("727869652776124416");
+                //chan.send(`Welcome ${member}`).then(m=>{..edit message with embed..})
+                chan.send({content:`||${member}||`,embed});
                 break;
             case "398644997412356106": //NCEES
                 log(2,"Unimplemented member join: NCEES")//TODO fix this.
@@ -63,7 +65,7 @@ function buildEmbed(member){
 
 
     var embed = new MessageEmbed()
-        .setTitle(`Welcome to the NCEES Networking Community, ${member}!`)
+        .setTitle(`Welcome to the NCEES Networking Community, ${member.user.username}!`)
         .setColor(0xD44A1C)
         .setAuthor("NCEES",footerUrl)
         .setDescription(`**You're our ${memberNum}${suffix} member!** Bringing us 0.1% closer to our next goal of **${nextGoal}** members, thanks for the help!`)
