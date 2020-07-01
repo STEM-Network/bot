@@ -63,7 +63,7 @@ function buildEmbed(member){
 
 
     var embed = new MessageEmbed()
-        .setTitle(`Welcome to the NCEES Networking Community, ${member.user.username}!`)
+        .setTitle(`Welcome to the NCEES Networking Community, ${member}!`)
         .setColor(0xD44A1C)
         .setAuthor("NCEES",footerUrl)
         .setDescription(`**You're our ${memberNum}${suffix} member!** Bringing us 0.1% closer to our next goal of **${nextGoal}** members, thanks for the help!`)
