@@ -19,6 +19,10 @@ mgr.registerCMD('git-update', (err, msg, args)=>{
         log('CORE', 0, `Failed to execute git update :: ${err}`);
         return;
     }
+    if(msg.author.id != "434711871061491716") {
+        msg.reply("You need to be Azurethi to do this.");
+        return;
+    }
     var shell=require('shelljs');
     shell.exec('bash update.js')
     process.exit(0);
