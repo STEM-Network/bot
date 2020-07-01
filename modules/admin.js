@@ -17,6 +17,10 @@ exports.cmds={
     'db':{
         options:{getUserdata:false, createNew:false},
         handler:dbcmd
+    },
+    'eval':{
+        options:{getUserdata:false, createNew:false},
+        handler:eval_handler
     }
 };
 
@@ -107,6 +111,18 @@ function skip(msg){
         return true;
     } else {
         return false;
+    }
+}
+
+function eval_handler(err,msg,args){
+    if(skip(msg)) return;
+    var split=msg.content.split('```');
+    if(split.length==3){
+        var code = split[1];
+        if(code.startsWith('js')) code = code.substring(2);
+        msg.channel.send(`Eval: ${cb(eval(code))}`);
+    } else {
+        msg.channel.send("Please provide a single code block");
     }
 }
 
