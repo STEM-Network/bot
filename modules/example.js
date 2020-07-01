@@ -1,4 +1,6 @@
-exports.init=(log, mgr, db, cli)=>{
+var log;
+exports.init=(_log, mgr, db, cli)=>{
+    log=_log;
     mgr.readyUp(exports.descriptor);
 }
 

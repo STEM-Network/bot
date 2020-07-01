@@ -5,13 +5,40 @@ const djs = require('discord.js');
 const auth = require('./auth.json');
 const db = require('./data/db');
 const log = require('./logger');
+
 log('CORE', 3,"",{type:"startup"});
 
 var cli = new djs.Client();
 
-const mgr = require('./mgr')(cli,db,log.bind(null,"MGR"),{regex:/^\/([a-zA-Z0-9_.]*)( |$)/});
+const mgr = require('./mgr')(cli,db,log.bind(null,"MGR"),{regex:/^\/([a-zA-Z0-9_\-.]*)( |$)/});
 
 var loadedModules = [];
+
+//Update from git
+mgr.registerCMD('git-update', (err, msg, args)=>{
+    log('CORE',3,'Got git Update CMD');
+    if(msg.author.id != "434711871061491716") {
+        msg.reply("You need to be Azurethi to do this.");
+        return;
+    }
+    if(args[1].toLowerCase() == "log"){
+        fs.readFile('update.log',(err,data)=>{
+            if(err){
+                msg.reply("no log available.");
+            } else {
+                msg.reply(`git update log: \`\`\`${data}\`\`\``);
+            }
+        })
+    } else {
+        msg.reply("Shutting down for git update");
+        setTimeout(()=>{
+            var shell=require('shelljs');
+            shell.exec('bash update.sh')
+            process.exit(0);
+        }, 1000);
+    }
+    
+},{getUserdata:false, createNew:false});
 
 log('CORE', 3,"Loading modules");
 fs.readdir('./modules',(err,modules)=>{
@@ -52,6 +79,7 @@ fs.readdir('./modules',(err,modules)=>{
         } else {
             cli.on('ready',()=>{
                 log('CORE', 3, `Live as ${cli.user.tag}`);
+                cli.guilds.resolve('714803464764522546').channels.resolve('725770219158634586').send('Started');
             });
             cli.login(auth.token)
         }
