@@ -85,7 +85,7 @@ function git(err,msg,args){
 }
 
 function force_save(err,msg,args){
-    log('CORE',3,'Got force-save CMD');
+    log(3,'Got force-save CMD');
     if(skip(msg)) return;
     db.doSave();
     msg.reply('Forced a db save');
