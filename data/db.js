@@ -124,6 +124,7 @@ class Collection{
         this.loadedData[obj.id] = obj;
         this.modified.push(obj.id);
         this.loaded.push(obj.id);
+        this.elems.push(`${obj.id}.json`);
         return obj;
     }
 }
