@@ -14,43 +14,6 @@ const mgr = require('./mgr')(cli,db,log.bind(null,"MGR"),{regex:/^\/([a-zA-Z0-9_
 
 var loadedModules = [];
 
-//Update from git
-mgr.registerCMD('git-update', (err, msg, args)=>{
-    log('CORE',3,'Got git Update CMD');
-    if(msg.author.id != "434711871061491716") {
-        msg.reply("You need to be Azurethi to do this.");
-        return;
-    }
-    if(args[1] && args[1].toLowerCase() == "log"){
-        fs.readFile('update.log',(err,data)=>{
-            if(err){
-                msg.reply("no log available.");
-            } else {
-                msg.reply(`git update log: \`\`\`${data}\`\`\``);
-            }
-        })
-    } else {
-        msg.reply("Shutting down for git update");
-        setTimeout(()=>{
-            var shell=require('shelljs');
-            shell.exec('bash update.sh')
-            process.exit(0);
-        }, 1000);
-    }
-    
-},{getUserdata:false, createNew:false});
-
-mgr.registerCMD('force-save', (err, msg, args)=>{
-    log('CORE',3,'Got force-save CMD');
-    if(msg.author.id != "434711871061491716") {
-        msg.reply("You need to be Azurethi to do this.");
-        return;
-    }
-    db.doSave();
-    msg.reply('Forced a db save');
-},{getUserdata:false, createNew:false});
-
-
 log('CORE', 3,"Loading modules");
 fs.readdir('./modules',(err,modules)=>{
     if(err) throw err;
