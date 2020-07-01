@@ -1,6 +1,12 @@
 # Discord API key
 auth.json
 
+# datafiles
+data/collections/users/*
+
+# test files
+test*
+
 # Logs
 logs
 *.log
