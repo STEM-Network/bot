@@ -3,6 +3,7 @@ const fs = require('fs');
 const djs = require('discord.js');
 
 const auth = require('./auth.json');
+const settings = require('./settings');
 const db = require('./data/db');
 const log = require('./logger');
 
@@ -10,7 +11,7 @@ log('CORE', 3,"",{type:"startup"});
 
 var cli = new djs.Client();
 
-const mgr = require('./mgr')(cli,db,log.bind(null,"MGR"),{regex:/^\/([a-zA-Z0-9_\-.]*)( |$)/});
+const mgr = require('./mgr')(cli,db,log.bind(null,"MGR"),{regex:settings.regex});
 
 var loadedModules = [];
 
@@ -54,6 +55,7 @@ fs.readdir('./modules',(err,modules)=>{
             cli.on('ready',()=>{
                 log('CORE', 3, `Live as ${cli.user.tag}`);
                 cli.guilds.resolve('714803464764522546').channels.resolve('725770219158634586').send('Started');
+                cli.user.setPresence({ activity: settings.activity, status: 'online' })
             });
             cli.login(auth.token)
         }
