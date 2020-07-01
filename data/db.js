@@ -20,7 +20,7 @@ exports.get=(id, next=()=>{})=>{
                 log(3,`Creating new collection "${id}"`);
                 var created = fs.mkdirSync(`./data/collections/${id}`,{recursive:true});
                 if(!created){
-                    log(2, "Failed to create new collection" + JSON.stringify(created));
+                    log(2, "Failed to create new collection: " + JSON.stringify(created));
                     next("Failed to create new collection");
                     return;
                 }
