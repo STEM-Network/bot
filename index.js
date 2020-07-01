@@ -13,6 +13,17 @@ const mgr = require('./mgr')(cli,db,log.bind(null,"MGR"),{regex:/^\/([a-zA-Z0-9_
 
 var loadedModules = [];
 
+//Update from git
+mgr.registerCMD('git-update', (err, msg, args)=>{
+    if(err){
+        log('CORE', 0, `Failed to execute git update :: ${err}`);
+        return;
+    }
+    var shell=require('shelljs');
+    shell.exec('bash update.js')
+    process.exit(0);
+},{getUserdata:false, createNew:false});
+
 log('CORE', 3,"Loading modules");
 fs.readdir('./modules',(err,modules)=>{
     if(err) throw err;
