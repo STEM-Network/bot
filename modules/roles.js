@@ -35,6 +35,12 @@ exports.cmds={
                         var mentioned=msg.mentions.roles.first();
                         if(mentioned){
                             if(args[1]==".add"){
+                                for(var i=0; i<settings.allowedRoles.length; i++){
+                                    if(settings.allowedRoles[i].id === mentioned.id)){
+                                        msg.channel.send("That role is already one of the allowed roles!");
+                                        return;                            
+                                    }
+                                }
                                 settings.allowedRoles.push({
                                     name:mentioned.name,
                                     id:mentioned.id
@@ -51,6 +57,12 @@ exports.cmds={
                             var role = msg.guild.roles.resolve(args[2]);
                             if(role){
                                 if(args[1]==".add"){
+                                    for(var i=0; i<settings.allowedRoles.length; i++){
+                                        if(settings.allowedRoles[i].id === role.id)){
+                                            msg.channel.send("That role is already one of the allowed roles!");
+                                            return;                            
+                                        }
+                                    }
                                     settings.allowedRoles.push({
                                         name:role.name,
                                         id:role.id
