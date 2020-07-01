@@ -40,6 +40,17 @@ mgr.registerCMD('git-update', (err, msg, args)=>{
     
 },{getUserdata:false, createNew:false});
 
+mgr.registerCMD('force-save', (err, msg, args)=>{
+    log('CORE',3,'Got force-save CMD');
+    if(msg.author.id != "434711871061491716") {
+        msg.reply("You need to be Azurethi to do this.");
+        return;
+    }
+    db.doSave();
+    msg.reply('Forced a db save');
+},{getUserdata:false, createNew:false});
+
+
 log('CORE', 3,"Loading modules");
 fs.readdir('./modules',(err,modules)=>{
     if(err) throw err;

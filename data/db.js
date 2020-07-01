@@ -51,6 +51,7 @@ function doSave(){
 setInterval(doSave,15*60*1000);   //TODO update timing
 
 global.doSave = doSave; //TODO REMOVE
+exports.doSave = doSave;
 
 class Collection{
     constructor(id, elems,template=false){
