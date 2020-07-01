@@ -84,7 +84,7 @@ module.exports=(cli, db, log, options={regex:/^\/([a-zA-Z0-9_.]*)( |$)/})=>{
         },
         readyUp:(modDesc)=>{
             waitingFor[modDesc.name].ready=true;
-            log(3, `${modDesc.name} module ready`);
+            log(4, `  ${modDesc.name} module ready`);
         },
         onReady:(func)=>{
             var waited = 0;
@@ -96,7 +96,7 @@ module.exports=(cli, db, log, options={regex:/^\/([a-zA-Z0-9_.]*)( |$)/})=>{
                 }
                 if(allReady){
                     clearInterval(waitingInterval);
-                    log(3, "All modules ready");
+                    log(4, "  All modules ready");
                     func();
                 } else if(waited>4){
                     var ages = [];
