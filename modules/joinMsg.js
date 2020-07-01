@@ -59,9 +59,9 @@ function buildEmbed(member){
 
     percent = Math.floor(percent*10)/10;
 
-    var footerUrl = "https://cdn.discordapp.com/avatars/714774039876337795/e82385007222252ffe6937a945b1cf89.png";
-    var thumbnailUrl = member.guild.iconURL();
-    var imageUrl = member.user.avatarURL();
+    var footerUrl = member.guild.iconURL();
+    var thumbnailUrl = member.user.avatarURL(); 
+    //var imageUrl = <add a banner?>
 
 
     var embed = new MessageEmbed()
@@ -70,7 +70,7 @@ function buildEmbed(member){
         .setAuthor("NCEES",footerUrl)
         .setDescription(`**You're our ${memberNum}${suffix} member!** Bringing us 0.1% closer to our next goal of **${nextGoal}** members, thanks for the help!`)
         .setFooter("NCEES",footerUrl)
-        .setImage(imageUrl)
+        //.setImage(imageUrl)
         .setThumbnail(thumbnailUrl)
         .addField("Things to See","Please have a read of [rules]() & visit [roles]() to get started with the community")
         .addField("Progress to next goal",`**${nextGoal-1000}**- ${percentBar} [${percent}%] -**${nextGoal}**`)
