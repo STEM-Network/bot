@@ -47,7 +47,7 @@ function git(err,msg,args){
                 reply_update_log(msg);
                 break;
             case "branch":
-                msg.reply(`Git branch: \`\`\`${shelljs.exec("git branch").stdout}\`\`\``);
+                msg.reply(`Git branch: \`\`\`${shelljs.exec("git branch -v").stdout}\`\`\``);
                 break;
         }
     } else {
