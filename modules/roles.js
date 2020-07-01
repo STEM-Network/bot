@@ -30,26 +30,38 @@ exports.cmds={
         options:{getUserdata:true, createNew:true},
         handler:(err, msg, args, userdata)=>{
             if(args.length>1){
-                if(args[1]==".add"){
+                if(args[1]==".add" || args[1]==".remove"){
                     if(msg.member.hasPermission('MANAGE_GUILD') && args.length>2){
                         var mentioned=msg.mentions.roles.first();
                         if(mentioned){
-                            settings.allowedRoles.push({
-                                name:mentioned.name,
-                                id:mentioned.id
-                            });
-                            settingsCol.modified.push('Roles');
-                            msg.channel.send(`Added ${mentioned.name} (${mentioned.id}) to the allowed roles`)
+                            if(args[1]==".add"){
+                                settings.allowedRoles.push({
+                                    name:mentioned.name,
+                                    id:mentioned.id
+                                });
+                                settingsCol.modified.push('Roles');
+                                msg.channel.send(`Added ${mentioned.name} (${mentioned.id}) to the allowed roles`)
+                            } else {
+                                settings.allowedRoles=settings.allowedRoles.filter(elm=>(elm.id!=mentioned.id));
+                                settingsCol.modified.push('Roles');
+                                msg.channel.send(`Removed ${mentioned.name} (${mentioned.id}) from the allowed roles`)
+                            }
                         } else {
                             //expect roleID in args[2] if no role mentioned
                             var role = msg.guild.roles.resolve(args[2]);
                             if(role){
-                                settings.allowedRoles.push({
-                                    name:role.name,
-                                    id:role.id
-                                });
-                                settingsCol.modified.push('Roles');
-                                msg.channel.send(`Added ${role.name} (${role.id}) to the allowed roles`);
+                                if(args[1]==".add"){
+                                    settings.allowedRoles.push({
+                                        name:role.name,
+                                        id:role.id
+                                    });
+                                    settingsCol.modified.push('Roles');
+                                    msg.channel.send(`Added ${role.name} (${role.id}) to the allowed roles`);
+                                } else {
+                                    settings.allowedRoles=settings.allowedRoles.filter(elm=>(elm.id!=role.id));
+                                    settingsCol.modified.push('Roles');
+                                    msg.channel.send(`Removed ${role.name} (${role.id}) from the allowed roles`)
+                                }
                             } else {
                                 msg.channel.send(`No role with an id of ${args[2]}`);
                             }
@@ -82,7 +94,7 @@ exports.cmds={
                     }
                 }
             } else {
-                msg.channel.send("Usage: \`\`/role (.add) <desired role>\`\`");
+                msg.channel.send("Usage: \`\`/role (.add|.remove) <desired role>\`\`");
             }
         }
     }
