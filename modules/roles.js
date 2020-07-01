@@ -72,8 +72,13 @@ exports.cmds={
                     if(roleId==-1){
                         msg.channel.send(`I couldn't find any roles like "${desired}"`);
                     } else {
-                        msg.member.roles.add(settings.allowedRoles[roleId].id);
-                        msg.channel.send(`You've been added to "${settings.allowedRoles[roleId].name}"`);
+                        if(msg.member.roles.cache.has(settings.allowedRoles[roleId].id)){
+                            msg.member.roles.remove(settings.allowedRoles[roleId].id);
+                            msg.channel.send(`You've been removed from "${settings.allowedRoles[roleId].name}"`);
+                        } else {
+                            msg.member.roles.add(settings.allowedRoles[roleId].id);
+                            msg.channel.send(`You've been added to "${settings.allowedRoles[roleId].name}"`);
+                        } 
                     }
                 }
             } else {
