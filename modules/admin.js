@@ -67,13 +67,16 @@ function git(err,msg,args){
                     var shell=require('shelljs');
                     shell.exec('bash update.sh')
                     process.exit(0);
-                }, 1000);
+                }, 500);
                 break;
             case "log":
                 reply_update_log(msg);
                 break;
             case "branch":
                 msg.reply(`Git branch: ${cb(shelljs.exec("git branch -v").stdout)}`);
+                break;
+            case "fetch":
+                msg.reply(`Git branch: ${cb(shelljs.exec("git fetch -v").stdout)}`);
                 break;
         }
     } else {
