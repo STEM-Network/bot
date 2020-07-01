@@ -21,12 +21,23 @@ mgr.registerCMD('git-update', (err, msg, args)=>{
         msg.reply("You need to be Azurethi to do this.");
         return;
     }
-    msg.reply("Shutting down for git update");
-    setTimeout(()=>{
-        var shell=require('shelljs');
-        shell.exec('bash update.sh')
-        process.exit(0);
-    }, 1000);
+    if(args[1].toLowerCase() == "log"){
+        fs.readFile('update.log',(err,data)=>{
+            if(err){
+                msg.reply("no log available.");
+            } else {
+                msg.reply(`git update log: \`\`\`${data}\`\`\``);
+            }
+        })
+    } else {
+        msg.reply("Shutting down for git update");
+        setTimeout(()=>{
+            var shell=require('shelljs');
+            shell.exec('bash update.sh')
+            process.exit(0);
+        }, 1000);
+    }
+    
 },{getUserdata:false, createNew:false});
 
 log('CORE', 3,"Loading modules");
