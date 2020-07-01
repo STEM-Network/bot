@@ -7,12 +7,16 @@ exports.init=(_log, _mgr, _db, _cli)=>{
 exports.requiredKeys=false;
 exports.cmds={
     'git':{
-        options:{getUserdata:true, createNew:true},
+        options:{getUserdata:false, createNew:false},
         handler:git
     },
     'force-save':{
-        options:{getUserdata:true, createNew:true},
+        options:{getUserdata:false, createNew:false},
         handler:force_save
+    },
+    'db':{
+        options:{getUserdata:false, createNew:false},
+        handler:dbcmd
     }
 };
 
@@ -27,12 +31,34 @@ exports.descriptor={
 //cmd handlers
 const shelljs=require('shelljs');
 const fs=require('fs');
-function git(err,msg,args){
-    if(msg.author.id != "434711871061491716") {
-        msg.reply("You need to be Azurethi to do this.");
-        return;
-    }
 
+function dbcmd(err,msg,args){
+    if(skip(msg)) return;
+    if(args[1]){
+        db.get(args[1], (err,col)=>{
+            if(err){
+                msg.channel.send(`Error getting "${args[1]}": ${err}`);
+            }else if(args[2]){
+                col.get(args[2],(err,item)=>{
+                    if(err){
+                        msg.channel.send(`Error getting "${args[2]}" in ${args[1]}: ${err}`);
+                    }else{
+                        msg.channel.send(`${args[1]} > ${args[2]}: ${cb(JSON.stringify(item,null,4))}`);
+                    }
+                });
+            }else{
+                var contents = col.elems.join('\n');
+                if(contents.length>1500) contents=contents.substring(0,1500)+' ...';
+                msg.channel.send(`${args[1]} contains: ${cb(contents)}`);
+            }
+        })
+    } else {
+        msg.channel.send('Usage: /db <collection> [<itemid>]');
+    }
+}
+
+function git(err,msg,args){
+    if(skip(msg)) return;
     if(args[1]){
         switch(args[1]){
             case "update":
@@ -47,7 +73,7 @@ function git(err,msg,args){
                 reply_update_log(msg);
                 break;
             case "branch":
-                msg.reply(`Git branch: \`\`\`${shelljs.exec("git branch -v").stdout}\`\`\``);
+                msg.reply(`Git branch: ${cb(shelljs.exec("git branch -v").stdout)}`);
                 break;
         }
     } else {
@@ -57,10 +83,7 @@ function git(err,msg,args){
 
 function force_save(err,msg,args){
     log('CORE',3,'Got force-save CMD');
-    if(msg.author.id != "434711871061491716") {
-        msg.reply("You need to be Azurethi to do this.");
-        return;
-    }
+    if(skip(msg)) return;
     db.doSave();
     msg.reply('Forced a db save');
 }
@@ -70,7 +93,20 @@ function reply_update_log(msg){
         if(err){
             msg.reply("no log available.");
         } else {
-            msg.reply(`git update log: \`\`\`${data}\`\`\``);
+            msg.reply(`git update log: ${cb(data)}`);
         }
     })
+}
+
+function skip(msg){
+    if(msg.author.id != "434711871061491716") {
+        msg.reply("You need to be Azurethi to do this.");
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function cb(contents){
+    return `\`\`\`${contents}\`\`\``;
 }
