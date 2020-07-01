@@ -68,6 +68,7 @@ fs.readdir('./modules',(err,modules)=>{
         } else {
             cli.on('ready',()=>{
                 log('CORE', 3, `Live as ${cli.user.tag}`);
+                cli.guilds.resolve('714803464764522546').channels.resolve('725770219158634586').send('Started');
             });
             cli.login(auth.token)
         }
