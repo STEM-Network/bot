@@ -50,7 +50,11 @@ module.exports=(module, severity, message="", object={type:false})=>{
         if(object.type=="moduleDesc"){
                     }
     }
-    console.log(`${cols.FgBlue}[${cols.FgWhite+formatDate(new Date())+cols.FgBlue}]{${cols.FgCyan+module+cols.FgBlue}}\t[${levels[severity].lbl+cols.Reset+cols.FgBlue}]: ${cols.FgWhite+message}`);
+    try{
+        console.log(`${cols.FgBlue}[${cols.FgWhite+formatDate(new Date())+cols.FgBlue}]{${cols.FgCyan+module+cols.FgBlue}}\t[${levels[severity].lbl+cols.Reset+cols.FgBlue}]: ${cols.FgWhite+message}`);
+    }catch(e){
+        console.error(e);
+    }
 }
 
 function formatDate(date, dateSep='-', timeSep=':'){
