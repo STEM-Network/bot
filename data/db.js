@@ -5,7 +5,7 @@
 */
 
 const fs = require('fs');
-const log = require('../logger');
+const log = require('../logger').bind(null,"DB");
 
 var loadedCollectionNames=[];
 var loadedCollections={};
@@ -38,8 +38,8 @@ exports.get=(id, next=()=>{})=>{
 }
 
 function doSave(){
+    log(3, "Saving modified cache data & unloading non persistants");
     loadedCollectionNames.forEach(colName => {
-        log(3, "Saving modified cache data & unloading non persistants");
         var col = loadedCollections[colName];
         var hadLoaded = [...col.loaded];
         hadLoaded.forEach((loaded)=>{
@@ -48,7 +48,7 @@ function doSave(){
         })
     });
 }
-setInterval(doSave,15*60*1000);
+setInterval(doSave,15*60*1000);   //TODO update timing
 
 global.doSave = doSave; //TODO REMOVE
 
