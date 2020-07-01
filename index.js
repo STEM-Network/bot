@@ -5,6 +5,7 @@ const djs = require('discord.js');
 const auth = require('./auth.json');
 const db = require('./data/db');
 const log = require('./logger');
+const { SSL_OP_EPHEMERAL_RSA } = require('constants');
 log('CORE', 3,"",{type:"startup"});
 
 var cli = new djs.Client();
@@ -21,9 +22,11 @@ mgr.registerCMD('git-update', (err, msg, args)=>{
         return;
     }
     msg.reply("Shutting down for git update");
-    var shell=require('shelljs');
-    shell.exec('bash update.sh')
-    process.exit(0);
+    setTimeout(()=>{
+        var shell=require('shelljs');
+        shell.exec('bash update.sh')
+        process.exit(0);
+    }, 1000);
 },{getUserdata:false, createNew:false});
 
 log('CORE', 3,"Loading modules");
