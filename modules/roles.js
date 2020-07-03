@@ -58,7 +58,7 @@ exports.cmds={
                             if(role){
                                 if(args[1]==".add"){
                                     for(var i=0; i<settings.allowedRoles.length; i++){
-                                        if(settings.allowedRoles[i].id === role.id)){
+                                        if(settings.allowedRoles[i].id === role.id){
                                             msg.channel.send("That role is already one of the allowed roles!");
                                             return;                            
                                         }
