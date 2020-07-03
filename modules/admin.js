@@ -82,6 +82,9 @@ function git(err,msg,args){
             case "fetch":
                 msg.reply(`Git branch: ${cb(shelljs.exec("git fetch -v").stdout)}`);
                 break;
+            default:
+                msg.reply(`Unknown git command: ${args[1]}`);
+                break;
         }
     } else {
         msg.reply("Please specify command");
