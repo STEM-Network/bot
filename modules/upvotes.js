@@ -77,7 +77,7 @@ function addUpvote(mgr,member){
                         break;
                     }
                 }
-                if(!onLb){
+                if(!onLB){
                     settings.leaderboard.push({
                         id: member.user.id,
                         dispName: member.user.displayName,
