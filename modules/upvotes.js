@@ -69,16 +69,16 @@ function addUpvote(mgr,member){
             if(ud.upvotes==null) ud.upvotes=0;
             ud.upvotes++;
             u.modified.push(ud.id);
-            updateNick(mgr,member);
-            if(ud.upvotes>settings.leaderboardMin || settings.leaderboard.length<10){ //Should be on leaderboard
-                var onLB=false;
-                for(var i=0; i<settings.leaderboard.length;i++){
-                    if(settings.leaderboard[i].id == member.user.id){
-                        onLB=true;
-                        settings.leaderboard[i].upvotes=ud.upvotes;
-                        break;
-                    }
+            var onLB=false;
+            for(var i=0; i<settings.leaderboard.length;i++){
+                if(settings.leaderboard[i].id == member.user.id){
+                    onLB=true;
+                    settings.leaderboard[i].upvotes=ud.upvotes;
+                    break;
                 }
+            }
+            updateNick(mgr,member);
+            if(ud.upvotes>settings.leaderboardMin || settings.leaderboard.length<10 || onLB){ //Should be on leaderboard
                 if(!onLB){
                     settings.leaderboard.push({
                         id: member.user.id,
