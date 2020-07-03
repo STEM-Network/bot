@@ -27,6 +27,7 @@ exports.init=(_log, mgr, db, cli)=>{
         
             cli.on('messageReactionAdd',(react, reacter)=>{
                 if(react.me) return;
+                if(react.message.author.bot) return;
                 if(react.emoji.identifier == "%F0%9F%91%8D" && reacter.id != react.message.author.id){
                     react.message.react(react.emoji);
                     if(react.message.member) addUpvote(mgr,react.message.member);
