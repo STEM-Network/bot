@@ -70,7 +70,7 @@ function addUpvote(mgr,member){
             ud.upvotes++;
             u.modified.push(ud.id);
             updateNick(mgr,member);
-            if(ud.upvotes>settings.leaderboardMin){ //Should be on leaderboard
+            if(ud.upvotes>settings.leaderboardMin || settings.leaderboard.length<10){ //Should be on leaderboard
                 var onLB=false;
                 for(var i=0; i<settings.leaderboard.length;i++){
                     if(settings.leaderboard[i].id == member.user.id){
@@ -86,7 +86,7 @@ function addUpvote(mgr,member){
                         upvotes: ud.upvotes
                     });
                 }
-                settings.leaderboard.sort((a,b)=>(a.upvotes-b.upvotes));
+                settings.leaderboard.sort((a,b)=>(b.upvotes-a.upvotes));
                 if(settings.leaderboard.length>10){
                     settings.leaderboard = settings.leaderboard.slice(0,10);
                 }
