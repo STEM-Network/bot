@@ -22,7 +22,11 @@ exports.init=(_log, mgr, db, cli)=>{
             cli.on('guildMemberUpdate', (preM, posM)=>{
                 if(preM.user.id == cli.user.id) return;
                 if(preM.nickname == posM.nickname) return;
-                updateNick(mgr,posM);
+                if(justSet.includes(preM.user.id)) {
+                    justSet=justSet.filter(m=>m!=preM.user.id);
+                } else {
+                    updateNick(mgr,posM);
+                }
             });
         
             cli.on('messageReactionAdd',(react, reacter)=>{
@@ -95,13 +99,14 @@ function addUpvote(mgr,member){
         }
     },{createNew:true});
 }
-
+var justSet = [];
 function updateNick(mgr,member){
     mgr.getUserdata(member.user, (err,ud,u)=>{
         if(err){
             log(2, `Failed to get userdata ${err}`);
         } else {
             var n = member.displayName.replace(/( )*\[([0-9]+)\]$/, '');
+            justSet.push(member.user.id);
             member.setNickname(`${n} [${ud.upvotes}]`, "Upvote score").then((gm)=>{
                 log(3, `Set ${gm.user.tag}'s username to ${gm.displayName}`);
                 if(ud.upvotes>=settings.leaderboardMin){
@@ -116,6 +121,7 @@ function updateNick(mgr,member){
                     }
                 }
             }).catch((err)=>{
+                justSet = justSet.filter(m => m!=member.user.id);
                 log(2, `Failled to set nickname of ${member.user.tag} (${member.displayName}): ${err}`);
             })
         }
