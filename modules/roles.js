@@ -45,11 +45,11 @@ exports.cmds={
                                     name:mentioned.name,
                                     id:mentioned.id
                                 });
-                                settingsCol.modified.push('Roles');
+                                settingsCol.modified.push(exports.descriptor.name);
                                 msg.channel.send(`Added ${mentioned.name} (${mentioned.id}) to the allowed roles`)
                             } else {
                                 settings.allowedRoles=settings.allowedRoles.filter(elm=>(elm.id!=mentioned.id));
-                                settingsCol.modified.push('Roles');
+                                settingsCol.modified.push(exports.descriptor.name);
                                 msg.channel.send(`Removed ${mentioned.name} (${mentioned.id}) from the allowed roles`)
                             }
                         } else {
@@ -67,11 +67,11 @@ exports.cmds={
                                         name:role.name,
                                         id:role.id
                                     });
-                                    settingsCol.modified.push('Roles');
+                                    settingsCol.modified.push(exports.descriptor.name);
                                     msg.channel.send(`Added ${role.name} (${role.id}) to the allowed roles`);
                                 } else {
                                     settings.allowedRoles=settings.allowedRoles.filter(elm=>(elm.id!=role.id));
-                                    settingsCol.modified.push('Roles');
+                                    settingsCol.modified.push(exports.descriptor.name);
                                     msg.channel.send(`Removed ${role.name} (${role.id}) from the allowed roles`)
                                 }
                             } else {
