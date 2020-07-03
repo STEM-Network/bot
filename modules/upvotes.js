@@ -81,7 +81,7 @@ function addUpvote(mgr,member){
                 if(!onLB){
                     settings.leaderboard.push({
                         id: member.user.id,
-                        dispName: member.user.displayName,
+                        dispName: member.displayName,
                         upvotes: ud.upvotes
                     });
                 }
