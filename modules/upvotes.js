@@ -56,7 +56,7 @@ exports.cmds={
 
 exports.requiredKeys={
     users:[
-        {key:'upvotes', default:0},
+        {key:'upvotes',  default:0},
         {key:'momCount', default:0}
     ]
 };
@@ -66,6 +66,7 @@ function addUpvote(mgr,member){
         if(err){
             log(2, `Failed to get userdata ${err}`);
         } else {
+            if(ud.upvotes==null) ud.upvotes=0;
             ud.upvotes++;
             u.modified.push(ud.id);
             updateNick(mgr,member);
