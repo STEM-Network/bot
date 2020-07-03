@@ -105,10 +105,10 @@ function updateNick(mgr,member){
                 log(3, `Set ${gm.user.tag}'s username to ${gm.displayName}`);
                 if(ud.upvotes>=settings.leaderboardMin){
                     for(var i=0; i<settings.leaderboard.length;i++){
-                        if(settings.leaderboard[i].id == member.user.id){
+                        if(settings.leaderboard[i].id == gm.user.id){
                             onLB=i;
                             settings.leaderboard[i].upvotes=ud.upvotes;
-                            settings.leaderboard[i].dispName=member.user.displayName;
+                            settings.leaderboard[i].dispName=gm.displayName;
                             settingsCol.modified.push(exports.descriptor.name);
                             break;
                         }
