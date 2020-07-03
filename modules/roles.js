@@ -10,7 +10,7 @@ exports.init=(_log, mgr, db, cli)=>{
         settingsCol=col;
         col.get(exports.descriptor.name,(err,sets)=>{
             if(err){
-                var obj = {id:"Roles", allowedRoles:[]}
+                var obj = {id:exports.descriptor.name, allowedRoles:[]}
                 col.loadedData[obj.id] = obj;
                 col.modified.push(obj.id);
                 col.elems.push(`${obj.id}.json`);
