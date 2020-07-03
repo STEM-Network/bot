@@ -25,9 +25,12 @@ fs.readdir('./modules',(err,modules)=>{
         try{
             if(mod.cmds){
                 Object.keys(mod.requiredKeys).forEach(collection=>{
-                    mod.requiredKeys[collection].forEach(key=>{
-                        mgr.registerKey(collection,key,(err)=>{
-                            if(err) log(mod.descriptor.name,2,`Failed to create required key "${JSON.stringify(key)}" in ${collection}:: ${err}`);
+                    db.get(collection,(err,col)=>{
+                        if(err){
+                            log('CORE',2, `Failed to get C/${collection} to add keys for ${mod.descriptor.name} module`);
+                        }
+                        mod.requiredKeys[collection].forEach(key=>{
+                            col.template.registerKey(key);
                         });
                     });
                 });
