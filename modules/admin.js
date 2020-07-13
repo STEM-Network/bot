@@ -133,6 +133,6 @@ function eval_handler(err,msg,args){
     }
 }
 
-function cb(contents){
-    return `\`\`\`${contents}\`\`\``;
+function cb(contents,lang=""){
+    return `\`\`\`${lang}\n${contents}\`\`\``;
 }
