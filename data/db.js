@@ -10,11 +10,89 @@ const log = require('../logger').bind(null,"DB");
 var loadedCollectionNames=[];
 var loadedCollections={};
 
+const Collections = {
+    loading: [],
+    loaded: [],
+    queue: {},
+    reference: {}
+}
+
+
+exports.get=(id, next=(err,collection)=>{})=>{
+    //if(id.includes('..')) id = id.replace(/../g, '.');
+    if(Collections.loaded.includes(id)){
+        log(4, `Serving loaded collection: ${id}`)
+        next(false,Collections.reference[id]);
+    } else if(Collections.loading.includes(id)){
+        log(4, `awaiting collection: ${id}`)
+        Collections.queue[id].push(next);
+    } else {
+        log(4, `Creating queue for collection: ${id}`)
+        Collections.queue[id] = [next]
+        Collections.loading.push(id);
+        checkLoad(id)
+    }
+}
+
+function checkLoad(id){
+    fs.exists(`./data/collections/${id}`, (exists)=>{
+        if(exists){
+            log(3, `Loading existing collection: ${id}`);
+            load(id);
+        } else {
+            log(3,`Creating new collection: ${id}`);
+            fs.mkdir(`./data/collections/${id}`,{recursive:true},(err)=>{
+                if(err){
+                    log(1,`Failed to create new collection: ${id}`);
+                    unqueue(id,err)
+                } else {
+                    log(3, `Loading new collection: ${id}`);
+                    load(id);
+                }
+            });
+        }
+    });
+}
+
+function load(id){
+    fs.readdir(`./data/collections/${id}`,(err,files)=>{
+        if(err){
+            log(1,`Failed to load collection: ${id}`);
+            unqueue(id,err)
+        } else {
+            fs.exists(`./data/templates/${id}.js`, (hasTemplate)=>{
+                Collections.reference[id] = new Collection(id, files, hasTemplate?require(`./templates/${id}.js`):false);
+                Collections.loaded.push(id);
+                Collections.loading = Collections.loading.filter(lid=>(lid!=id));
+                unqueue(id,false)
+            });
+        }
+    })
+}
+
+function unqueue(id,err){
+    log(4, `unqueue(${id})`);
+    if(Collections.queue[id] && Collections.queue[id].length>0){
+        Collections.queue[id].forEach(callback=>{
+            callback(err, Collections.reference[id]);
+        });
+    }
+}
+
+
+
+/*
 exports.get=(id, next=()=>{})=>{
     if(id.includes('..')) id = id.replace(/../g, '.');
     if(loadedCollectionNames.includes(id)){
+        
+        log(3,`served loaded collection: ${id}: ${loadedCollections[id]}`);
         next(false, loadedCollections[id]);
     } else {
+        log(3,`collection not loaded: ${id}`);
+        loadedCollectionNames.push(id);
+        var loadedCol = null;
+        loadedCollections[id] = loadedCol;
         fs.exists(`./data/collections/${id}`, (exists)=>{
             if(!exists){
                 log(3,`Creating new collection "${id}"`);
@@ -25,16 +103,15 @@ exports.get=(id, next=()=>{})=>{
                     next(err);
                 } else {
                     fs.exists(`./data/templates/${id}.js`, (hasTemplate)=>{
-                        var loadedCol = new Collection(id, files, hasTemplate?require(`./templates/${id}.js`):false);
-                        loadedCollectionNames.push(id);
-                        loadedCollections[id] = loadedCol;
+                        loadedCol = new Collection(id, files, hasTemplate?require(`./templates/${id}.js`):false);
+                        //loadedCollections[id] = loadedCol;
                         next(false,loadedCol);
                     });
                 }
             })
         });
     }
-}
+}*/
 
 function doSave(){
     log(3, "Saving modified cache data & unloading non persistants");
