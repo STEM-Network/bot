@@ -116,9 +116,9 @@ exports.get=(id, next=()=>{})=>{
 }*/
 
 function doSave(){
-    log(3, "Saving modified cache data & unloading non persistants");
-    loadedCollectionNames.forEach(colName => {
-        var col = loadedCollections[colName];
+    //log(3, "Saving modified cache data & unloading non persistants");
+    Collections.loaded.forEach(colName => {
+        var col = Collections.reference[colName];
         var hadLoaded = [...col.loaded];
         hadLoaded.forEach((loaded)=>{
             col.save(loaded);
