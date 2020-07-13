@@ -28,12 +28,17 @@ const cols={
 }
 
 const levels = [
-    {lbl: `${cols.BgRed+cols.FgWhite}FATAL#`},
-    {lbl:              `${cols.FgRed}SEVERE`},
-    {lbl:              `${cols.FgRed} WARN `},
-    {lbl:             `${cols.FgCyan} Info `},
-    {lbl:            `${cols.FgWhite}_Debug`}
+    {lbl: `${cols.BgRed+cols.FgWhite}FATAL#`}, //0
+    {lbl:              `${cols.FgRed}SEVERE`}, //1
+    {lbl:              `${cols.FgRed} WARN `}, //2
+    {lbl:             `${cols.FgCyan} Info `}, //3
+    {lbl:            `${cols.FgWhite}_Debug`}  //4
 ]
+
+const logLevel = {
+    global: 4,
+    DB: 3,
+}
 
 module.exports=(module, severity, message="", object={type:false})=>{
     if(object.type){
@@ -51,7 +56,8 @@ module.exports=(module, severity, message="", object={type:false})=>{
                     }
     }
     try{
-        console.log(`${cols.FgBlue}[${cols.FgWhite+formatDate(new Date())+cols.FgBlue}]{${cols.FgCyan+module+cols.FgBlue}}\t[${levels[severity].lbl+cols.Reset+cols.FgBlue}]: ${cols.FgWhite+message}`);
+        if((logLevel[module] && logLevel[module]>=severity) || (!logLevel[module] && logLevel["global"]>=severity))
+            console.log(`${cols.FgBlue}[${cols.FgWhite+formatDate(new Date())+cols.FgBlue}]{${cols.FgCyan+module+cols.FgBlue}}\t[${levels[severity].lbl+cols.Reset+cols.FgBlue}]: ${cols.FgWhite+message}`);
     }catch(e){
         console.error(e);
     }
