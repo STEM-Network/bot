@@ -8,11 +8,10 @@ exports.init=(log, mgr, db, cli)=>{
                 var chan = member.guild.channels.resolve("727869652776124416");
                 //chan.send(`Welcome ${member}`).then(m=>{..edit message with embed..})
                 chan.send({content:`||${member}||`,embed}).then(msg=>{
-                    msg.react("one")
-                    msg.react("two")
-                    msg.react("three")
-                    msg.react("four")
-                    msg.react("five")
+                    ["0️⃣","1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
+                    .forEach(emoji=>{
+                        msg.react(emoji);
+                    })
                 });
 
                 break;
