@@ -17,6 +17,8 @@ const Collections = {
     reference: {}
 }
 
+exports.info = Collections;
+
 
 exports.get=(id, next=(err,collection)=>{})=>{
     //if(id.includes('..')) id = id.replace(/../g, '.');
