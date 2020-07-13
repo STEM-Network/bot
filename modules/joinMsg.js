@@ -73,6 +73,6 @@ function buildEmbed(member){
         //.setImage(imageUrl)
         .setThumbnail(thumbnailUrl)
         .addField("Things to See","Please have a read of [rules]() & visit [roles]() to get started with the community")
-        .addField("Progress to next goal",`**${nextGoal-1000}**- ${percentBar} [${percent}%] -**${nextGoal}**`)
+        .addField("Progress to next goal",`**${nextGoal-1000}**- \`\`${percentBar}\`\` [${percent}%] -**${nextGoal}**`)
     return embed;
 }
