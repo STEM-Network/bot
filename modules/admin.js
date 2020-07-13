@@ -39,25 +39,29 @@ const fs=require('fs');
 function dbcmd(err,msg,args){
     if(skip(msg)) return;
     if(args[1]){
-        db.get(args[1], (err,col)=>{
-            if(err){
-                msg.channel.send(`Error getting "${args[1]}": ${err}`);
-            }else if(args[2]){
-                col.get(args[2],(err,item)=>{
-                    if(err){
-                        msg.channel.send(`Error getting "${args[2]}" in ${args[1]}: ${err}`);
-                    }else{
-                        msg.channel.send(`${args[1]} > ${args[2]}: ${cb(JSON.stringify(item,null,4))}`);
-                    }
-                });
-            }else{
-                var contents = col.elems.join('\n');
-                if(contents.length>1500) contents=contents.substring(0,1500)+' ...';
-                msg.channel.send(`${args[1]} contains: ${cb(contents)}`);
-            }
-        })
+        if(args[1]=="?"){
+            msg.channel.send(`Loaded Collections: ${cb(db.info.loaded.join("\n"))}`);
+        } else {
+            db.get(args[1], (err,col)=>{
+                if(err){
+                    msg.channel.send(`Error getting "${args[1]}": ${err}`);
+                }else if(args[2]){
+                    col.get(args[2],(err,item)=>{
+                        if(err){
+                            msg.channel.send(`Error getting "${args[2]}" in ${args[1]}: ${err}`);
+                        }else{
+                            msg.channel.send(`${args[1]} > ${args[2]}: ${cb(JSON.stringify(item,null,4))}`);
+                        }
+                    });
+                }else{
+                    var contents = col.elems.join('\n');
+                    if(contents.length>1500) contents=contents.substring(0,1500)+' ...';
+                    msg.channel.send(`${args[1]} contains: ${cb(contents)}`);
+                }
+            })
+        }
     } else {
-        msg.channel.send('Usage: \`\`/db <collection> [<itemid>]\`\`');
+        msg.channel.send("Usage: \`\`/db <collection>|? [<itemid>]\`\`");
     }
 }
 
