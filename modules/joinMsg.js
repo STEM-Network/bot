@@ -53,7 +53,7 @@ function buildEmbed(member){
         if(i*5<percent){
             percentBar +="█";
         } else {
-            percentBar +="░"
+            percentBar +=" "
         }
     }
 
