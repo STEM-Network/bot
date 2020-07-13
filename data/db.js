@@ -7,9 +7,6 @@
 const fs = require('fs');
 const log = require('../logger').bind(null,"DB");
 
-var loadedCollectionNames=[];
-var loadedCollections={};
-
 const Collections = {
     loading: [],
     loaded: [],
