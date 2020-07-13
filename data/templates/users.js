@@ -14,11 +14,12 @@ class UserTemplate extends DataTemplate{
         return obj;
     }
 
+    /*
     registerKey(desc={}){
         log(4,`Registed User key: ${JSON.stringify(desc)}, rc-pre: ${JSON.stringify(this.regKeys)}`);
         super.registerKey(desc);
         log(4,`regKeys post: ${JSON.stringify(this.regKeys)}`)
-    }
+    }*/
 }
 
 module.exports = UserTemplate;
